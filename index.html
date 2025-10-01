@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Vocabulary Worksheet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .container {
+            max-width: 900px;
+        }
+        .score-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #e5e7eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .score-text-lg {
+            font-size: 32px; /* Set to 32px as requested */
+            font-weight: bold;
+        }
+        .correct-answer-icon {
+            color: #10b981; /* green-500 */
+            font-weight: bold;
+            margin-right: 8px;
+            font-size: 1.25rem;
+        }
+        .incorrect-answer-icon {
+            color: #ef4444; /* red-500 */
+            font-weight: bold;
+            margin-right: 8px;
+            font-size: 1.25rem;
+        }
+        .correct-border {
+            border-color: #10b981 !important;
+        }
+        .incorrect-border {
+            border-color: #ef4444 !important;
+        }
+        .fill-in-input {
+            width: 100px;
+            text-align: center;
+            padding: 4px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+            margin: 0 4px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center py-12">
+    <div class="container bg-white p-8 rounded-2xl shadow-xl space-y-8">
+        <header class="text-center space-y-2">
+            <div id="score-display" class="score-circle mx-auto mb-4 font-bold text-gray-700">
+                <span id="score-text" class="score-text-lg">--/8</span>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-800">Complete the Paragraph</h1>
+            <p class="text-lg text-gray-500">Fill in the blanks using the words provided in the box.</p>
+        </header>
+
+        <form id="quiz-form" class="space-y-6">
+
+            <!-- Word Box -->
+            <section class="space-y-4">
+                <h2 class="text-xl font-semibold text-gray-700">Available Words:</h2>
+                <div class="bg-indigo-50 p-4 rounded-lg shadow-inner flex flex-wrap gap-4 text-indigo-700 font-medium">
+                    <span>identify,</span>
+                    <span>container,</span>
+                    <span>valuable,</span>
+                    <span>store,</span>
+                    <span>indicate,</span>
+                    <span>device,</span>
+                    <span>innovation,</span>
+                    <span>benefit</span>
+                </div>
+            </section>
+            
+            <!-- Paragraph with Blanks -->
+            <section class="space-y-4 bg-gray-50 p-6 rounded-lg border">
+                <h2 class="text-2xl font-semibold text-gray-700">The Perfect Cup of Coffee</h2>
+                
+                <p class="text-gray-700 leading-relaxed text-lg">
+                    To make a delicious cup of coffee, you'll need a few things. First, grab a coffee 
+                    <span id="q1-span" class="inline-flex items-center">
+                        <input type="text" id="q1" name="q1" class="fill-in-input">
+                    </span> 
+                    to put your coffee beans. We should 
+                    <span id="q2-span" class="inline-flex items-center">
+                        <input type="text" id="q2" name="q2" class="fill-in-input">
+                    </span> 
+                    them in an airtight container to keep fresh. Next, an important 
+                    <span id="q3-span" class="inline-flex items-center">
+                        <input type="text" id="q3" name="q3" class="fill-in-input">
+                    </span> 
+                    is a coffee maker. This wonderful 
+                    <span id="q4-span" class="inline-flex items-center">
+                        <input type="text" id="q4" name="q4" class="fill-in-input">
+                    </span> 
+                    helps us brew coffee easily. Now, let's talk about the beans. It's important to 
+                    <span id="q5-span" class="inline-flex items-center">
+                        <input type="text" id="q5" name="q5" class="fill-in-input">
+                    </span> 
+                    good quality beans. Look for the ones that are fresh and have a nice aroma. Once you have your beans, it's time to grind them using a coffee grinder. Now, put the ground coffee into a filter in your coffee maker. This is a simple step with a big 
+                    <span id="q6-span" class="inline-flex items-center">
+                        <input type="text" id="q6" name="q6" class="fill-in-input">
+                    </span>-
+                    it filters out the tiny coffee grounds, giving you a smooth cup of coffee. Finally, turn on your coffee maker. As it brews, the wonderful smell will 
+                    <span id="q7-span" class="inline-flex items-center">
+                        <input type="text" id="q7" name="q7" class="fill-in-input">
+                    </span> 
+                    that your coffee is almost ready. Make sure to choose high-quality coffee beans, as they are a 
+                    <span id="q8-span" class="inline-flex items-center">
+                        <input type="text" id="q8" name="q8" class="fill-in-input">
+                    </span> 
+                    ingredient in creating a perfect cup of coffee. Enjoy!
+                </p>
+            </section>
+
+            <button type="submit" id="submit-button" class="w-full bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300">
+                Submit Answers
+            </button>
+        </form>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('quiz-form');
+            const submitButton = document.getElementById('submit-button');
+            const scoreText = document.getElementById('score-text');
+            const scoreCircle = document.getElementById('score-display');
+
+            // Answer Key for the 8 blanks
+            const answerKey = {
+                'q1': 'container',
+                'q2': 'store',
+                'q3': 'innovation',
+                'q4': 'device',
+                'q5': 'identify',
+                'q6': 'benefit',
+                'q7': 'indicate',
+                'q8': 'valuable'
+            };
+
+            const totalQuestions = Object.keys(answerKey).length;
+
+            // Helper function to normalize text answers for case-insensitivity
+            const normalizeAnswer = (answer) => {
+                return (typeof answer === 'string' ? answer.trim().toLowerCase() : '');
+            };
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                let score = 0;
+                const formElements = form.querySelectorAll('input, button');
+
+                // Disable all form inputs
+                formElements.forEach(el => el.disabled = true);
+                
+                // Remove previous results/icons
+                document.querySelectorAll('.correct-answer-icon, .incorrect-answer-icon, .correct-hint').forEach(el => el.remove());
+                document.querySelectorAll('.correct-border, .incorrect-border').forEach(el => el.classList.remove('correct-border', 'incorrect-border'));
+
+
+                for (let i = 1; i <= totalQuestions; i++) {
+                    const qId = `q${i}`;
+                    const inputElement = document.getElementById(qId);
+                    
+                    if (!inputElement) continue;
+
+                    const rawCorrectAnswer = answerKey[qId];
+                    const correctAnswer = normalizeAnswer(rawCorrectAnswer);
+                    const normalizedUserAnswer = normalizeAnswer(inputElement.value);
+                    
+                    const isCorrect = (normalizedUserAnswer === correctAnswer);
+                    const containerSpan = document.getElementById(qId + '-span');
+
+                    if (isCorrect) {
+                        score++;
+                        inputElement.classList.add('correct-border');
+                    } else {
+                        inputElement.classList.add('incorrect-border');
+                    }
+
+                    // --- Append Icon and Hint ---
+                    if (containerSpan) {
+                        const icon = document.createElement('span');
+                        icon.classList.add('font-bold', 'text-xl', 'ml-2', 'flex-shrink-0');
+                        
+                        // Check if an icon already exists (shouldn't happen with the clear, but defensive)
+                        const existingIcon = containerSpan.querySelector('.correct-answer-icon, .incorrect-answer-icon');
+                        if (existingIcon) existingIcon.remove();
+
+                        if (isCorrect) {
+                            icon.textContent = '✓';
+                            icon.classList.add('correct-answer-icon');
+                        } else {
+                            icon.textContent = '✗';
+                            icon.classList.add('incorrect-answer-icon');
+                            
+                            // Add hint for incorrect answers
+                            const correctHintSpan = document.createElement('span');
+                            correctHintSpan.classList.add('text-sm', 'text-red-500', 'ml-2', 'correct-hint', 'absolute', 'top-full', 'left-1/2', 'transform', '-translate-x-1/2', 'mt-1', 'whitespace-nowrap');
+                            correctHintSpan.textContent = `Correct: ${rawCorrectAnswer}`;
+                            containerSpan.appendChild(correctHintSpan);
+                        }
+                        
+                        // Append the icon to the container span (sibling to the input for clean display)
+                        containerSpan.appendChild(icon);
+                        containerSpan.style.position = 'relative'; // Set position for absolute hint
+                    }
+                }
+
+                // Display total score in 32px bold font
+                scoreText.textContent = `${score}/${totalQuestions}`;
+                scoreCircle.classList.remove('bg-gray-200', 'text-gray-700');
+                scoreCircle.classList.add('bg-indigo-600', 'text-white');
+                scoreText.classList.add('score-text-lg');
+
+
+                // Set 10-minute lock
+                setTimeout(() => {
+                    formElements.forEach(el => el.disabled = false);
+                    scoreText.textContent = '--/8';
+                    scoreCircle.classList.remove('bg-indigo-600', 'text-white');
+                    scoreCircle.classList.add('bg-gray-200', 'text-gray-700');
+                    scoreText.classList.remove('score-text-lg');
+
+                    document.querySelectorAll('.correct-answer-icon, .incorrect-answer-icon, .correct-hint').forEach(el => el.remove());
+                    document.querySelectorAll('.correct-border, .incorrect-border').forEach(el => el.classList.remove('correct-border', 'incorrect-border'));
+                }, 600000); // 10 minutes (600000 ms)
+            });
+        });
+    </script>
+</body>
+</html>
